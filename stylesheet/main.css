@@ -1,0 +1,19 @@
+body {
+    font-family: Cambria;
+    color: grey;
+}
+div#container {
+    width: 50%;
+    margin-left: 25%;
+
+}
+div#header {
+    background-color: lightgray;
+}
+.grayed {
+    color: grey;
+}
+h3 {
+    margin-left: 40%;
+    padding: 10px;
+}

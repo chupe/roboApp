@@ -1,7 +1,7 @@
 class Robot {
     constructor(name) {
         this.name = name;
-        this.energy = 80;
+        this.energy = 60;
         this.location = [0, 0];
         this.maxMove = 30;
         this._temp = {
@@ -29,6 +29,8 @@ class Robot {
                 return `${this.name}'s had a ${charge}% charge for a total of ${this.energy}%.`;
             case 'errorMove':
                 return `A robot can travel a maximum of ${this.maxMove} steps.`;
+            case 'coorNaN':
+                return 'Coordinates are not numbers';
             case 'selfNrg':
                 return this.energy == 100 ? `${this.name}'s energy is FULL!` : `${this.name} has ${this.energy}% energy left.`;
             default:
@@ -41,8 +43,13 @@ class Robot {
     energyMnger(action, energyAmount) {
         switch (action) {
             case 'charge':
-                (this.energy + energyAmount) > 100 ? this.energy = 100 : this.energy += energyAmount;
-                break;
+                energyAmount = parseInt(energyAmount, 10);
+                if (isNaN(energyAmount)) {
+                    return 'Entered value is not a number';
+                } else {
+                    (this.energy + energyAmount) > 100 ? this.energy = 100 : this.energy += energyAmount;
+                    return this.status('charge');
+                }
             case 'lowEnergy':
                 return 'Energy is critically low! No action is possible. Please recharge!';
             case 'check':
@@ -57,8 +64,12 @@ class Robot {
 
     move(dx, dy) {
         let energyAmount = 5;
+        dx = parseInt(dx);
+        dy = parseInt(dy);
         if (dx + dy > this.maxMove) {
             return this.status('errorMove');
+        } else if (isNaN(dx) || isNaN(dy)) {
+            return this.status('coorNaN');
         }
         if (!this.energyMnger('check', energyAmount)) return;
         this._temp.distance = Math.abs(dx) + Math.abs(dy);
@@ -71,8 +82,7 @@ class Robot {
             return this.status('energy');
         } else {
             this._temp.prevEnergy = this.energy;
-            this.energyMnger('charge', amount);
-            return this.status('charge');
+            return this.energyMnger('charge', amount);
         }
     }
 
@@ -81,11 +91,13 @@ class Robot {
 // let Nonko = new Robot ('Nonko');
 // console.log(Nonko.status());
 // console.log(Nonko.charge());
-// console.log(Nonko.move(25, 17));
 // console.log(Nonko.status('location'));
 // console.log(Nonko.move(-10, -18));
 // console.log(Nonko.status('location'));
 // console.log(Nonko.status('location'));
 // console.log(Nonko.charge(25));
 // console.log(Nonko.status('energy'));
-// console.log(Nonko.charge(25));
+// console.log(Nonko.charge('aaa'));
+// console.log(Nonko.charge(12));
+// console.log(Nonko.charge('14'));
+// console.log(Nonko.move('2', '12'));

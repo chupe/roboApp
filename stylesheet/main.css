@@ -17,6 +17,9 @@ h3 {
     margin-left: 40%;
     padding: 10px;
 }
-.redBtn{
-    background-color: red;
+input.numInput{
+    width: 50px;
+}
+button {
+    width: 60px;
 }

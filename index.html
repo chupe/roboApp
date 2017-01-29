@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>The Robot Game</title>
@@ -15,10 +15,20 @@
         </div>
         <div id="body">
             <p id="introduction">This is a robot game. You can create a robot with your own name.</p>
-            <input id="roboName" value="Name for your new robot!" title="Enter robot name here">
-            <button id="createBtn" title="Click to create a robot">Create</button>
-            <button id="roboStatus" title="Robot report">Report</button>
-            <button id="test" title="Robot report">Test</button>
+            <p>
+                <input id="roboName" class="grayed" value="Name for your new robot!" title="Enter robot name here">
+                <button id="createBtn" title="Click to create a robot">Create</button><br/>
+            </p>
+            <span>Select the robot to control:</span>
+            <select id="roboSelect" title="Select a robot to control"></select><br/>
+            <button id="roboStatus" title="Robot report">Report</button><br/>
+            <button id="chargeButton" title="Click to charge the robot">Charge</button>
+            <input id="roboCharge" class="numInput" title="Amount of energy to charge" value="10"><br/>
+            <button id="moveButton" title="Click to move the robot">Move</button>
+            <input id="roboMoveX" class="numInput" title="Relative coordinates for X" value="0">
+            <input id="roboMoveY" class="numInput" title="Relative coordinates for Y" value="0">
+        </div>
+        <div id="info">
         </div>
     </div>
     <script src="script/main.js"></script>

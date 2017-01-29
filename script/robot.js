@@ -16,41 +16,37 @@ class Robot {
         switch (action) {
             case 'location':
                 if (this._temp.distance == false){
-                    console.log(`${this.name} is at location of ${this.location}.`);
-                    return;
+                    return`${this.name} is at location of ${this.location}.`;
                 } else {
-                    console.log(`${this.name} has traveled a distance of ${this._temp.distance} to a new location of ${this.location}.`);
+                    let dist = this._temp.distance;
                     this._temp.distance = 0;
-                    return;
+                    return `${this.name} has traveled a distance of ${dist} to a new location of ${this.location}.`;
                 }
             case 'energy':
-                this.energy == 100 ? console.log(`${this.name}'s energy is FULL!`) : console.log(`${this.name} has ${this.energy}% energy left.`);
-                break;
+                return this.energy >= 100 ? `${this.name}'s energy is FULL!` : `${this.name} has ${this.energy}% energy left.`;
             case 'charge':
                 let charge = this.energy - this._temp.prevEnergy;
-                console.log(`${this.name}'s had a ${charge}% charge for a total of ${this.energy}%.`);
-                break;
+                return `${this.name}'s had a ${charge}% charge for a total of ${this.energy}%.`;
             case 'errorMove':
-                console.log(`A robot can travel a maximum of ${this.maxMove} steps.`);
-                break;
+                return `A robot can travel a maximum of ${this.maxMove} steps.`;
             case 'selfNrg':
                 return this.energy == 100 ? `${this.name}'s energy is FULL!` : `${this.name} has ${this.energy}% energy left.`;
             default:
                 let energyAmount = 2;
-                if (!this.energyMnger(energyAmount)) return;
-                console.log(`${this.name} reporting for duty! My coordinates are ${this.location}. ${this.status('selfNrg')}`);
-                break;
+                if (!this.energyMnger('check', energyAmount)) return this.energyMnger ('lowEnergy');
+                return`${this.name} reporting for duty! My coordinates are ${this.location}. ${this.status('selfNrg')}`;
         }
     }
 
-    energyMnger(energyAmount, action) {
+    energyMnger(action, energyAmount) {
         switch (action) {
             case 'charge':
                 (this.energy + energyAmount) > 100 ? this.energy = 100 : this.energy += energyAmount;
                 break;
-            default:
-                if (this.energy - energyAmount < 0) {
-                    console.log('Energy is critically low! No action is possible. Please recharge!');
+            case 'lowEnergy':
+                return 'Energy is critically low! No action is possible. Please recharge!';
+            case 'check':
+                if (this.energy < energyAmount) {
                     return false;
                 } else {
                     this.energy -= energyAmount;
@@ -62,34 +58,34 @@ class Robot {
     move(dx, dy) {
         let energyAmount = 5;
         if (dx + dy > this.maxMove) {
-            this.status('errorMove');
-            return;
+            return this.status('errorMove');
         }
-        if (!this.energyMnger(energyAmount)) return;
+        if (!this.energyMnger('check', energyAmount)) return;
         this._temp.distance = Math.abs(dx) + Math.abs(dy);
         this.location = [this.location[0]+dx, this.location[1] + dy];
+        return this.status('location');
     }
 
     charge(amount = 10) {
         if (this.energy >= 100) {
-            this.status('energy')
+            return this.status('energy');
         } else {
             this._temp.prevEnergy = this.energy;
-            this.energyMnger(amount, 'charge');
-            this.status('charge');
+            this.energyMnger('charge', amount);
+            return this.status('charge');
         }
     }
 
 }
 
-const Nonko = new Robot ('Nonko');
-Nonko.status();
-Nonko.charge();
-Nonko.move(12, 17);
-Nonko.status('location');
-Nonko.move(-10, -18);
-Nonko.status('location');
-Nonko.status('location');
-Nonko.charge(25);
-Nonko.status('energy');
-Nonko.charge(25);
+// let Nonko = new Robot ('Nonko');
+// console.log(Nonko.status());
+// console.log(Nonko.charge());
+// console.log(Nonko.move(25, 17));
+// console.log(Nonko.status('location'));
+// console.log(Nonko.move(-10, -18));
+// console.log(Nonko.status('location'));
+// console.log(Nonko.status('location'));
+// console.log(Nonko.charge(25));
+// console.log(Nonko.status('energy'));
+// console.log(Nonko.charge(25));
